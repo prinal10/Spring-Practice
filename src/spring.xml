@@ -4,7 +4,7 @@
 
 <beans>
 	
-	<bean id="triangle" class="com.demo.model.Triangle">
+	<bean id="triangle" class="com.demo.model.Triangle" name="triangle-name" autowire="byName">
 		
 		<!-- 
 			<property name="type" value="Equilateral"></property>
@@ -27,24 +27,75 @@
  		It checks whether both have the same data type and then sets the value of the variable
  		 -->
  		<property name="pointA" ref="zeroPoint"></property>
- 		<property name="pointB" ref="point2"></property>
- 		<property name="pointC" ref="point3"></property>
+ 		
+ 		<!-- 
+ 		As you can see if the bean is to be used by one class only then we can limit the scope
+ 		by not referencing bean and instead put it in the property tag itself. Compare "pointA" 
+ 		with "pointB & pointC". pointA will be used by all but B & C will be use by triangle only.
+ 		Also since we can not use or refer pointB &C bean outside property tag we can
+ 		remove the bean "id" para	
+ 		 -->
+ 		<property name="pointB">
+ 			<bean class="com.demo.model.Point">
+				<property name="x" value="-20"></property>
+				<property name="y" value="0"></property>
+			</bean>
+ 		</property>
+ 		
+ 		<property name="pointC">
+ 			<bean class="com.demo.model.Point">
+				<property name="x" value="20"></property>
+				<property name="y" value="0"></property>
+			</bean>	
+ 		</property>
+ 		
+ 		<!--
+ 		Suppose we have a Collection Framework Object variable: for example here we have
+ 		List Object variable "points". So to insert values we will use the "list" tag and 
+ 		repeat the "ref" tag to add objects/values in the list. Type conversion also happens 
+ 		here. 		 
+ 		 -->
+ 		<property name="points">
+ 			<list>
+ 				<ref bean="zeroPoint"/>
+ 				<ref bean="zeroPoint"/>
+ 				<ref bean="zeroPoint"/> 				
+ 			</list>
+ 		</property>
+ 		
+ 		
  		
 	</bean>
+	
 	<bean id="zeroPoint" class="com.demo.model.Point">
 		<property name="x" value="0"></property>
+		<property name="y" value="1"></property>
+	</bean>
+	
+	<!--
+	"Autowiring" is enabled by using the "autowire = byName" tag in the triangle bean.
+	After that create a bean with the same name as the triangle member variable name,
+	here it is "pointD". We don't have to write  <property name="pointD" ref="pointD"></property>
+	or specify any property with reference. Instead everything is initialize automatically. So
+	triangle bean will look for a bean with the same id/name/alia-name as its member variable and
+	initialize the member variable with the found bean
+	 -->
+	<bean id="pointD" class="com.demo.model.Point">
+		<property name="x" value="40"></property>
 		<property name="y" value="0"></property>
 	</bean>
 	
-	<bean id="point2" class="com.demo.model.Point">
-		<property name="x" value="-20"></property>
-		<property name="y" value="0"></property>
-	</bean>
 	
-	<bean id="point3" class="com.demo.model.Point">
-		<property name="x" value="20"></property>
-		<property name="y" value="0"></property>
-	</bean>
+	<!--
+		"alias" is used to give another name to the bean for referencing. we can also
+		use "name" para in the bean itself to give another name. We can write multiple 
+		aliases for a bean. We can use these alias in the main method to get the bean
+	 -->   
+	<alias name="triangle" alias="triangle-alias1"/>
+	<alias name="triangle" alias="triangle-alias2"/>
+	
+	
+	
 	
 	
 </beans>

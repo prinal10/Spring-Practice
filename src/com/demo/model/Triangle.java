@@ -1,5 +1,7 @@
 package com.demo.model;
 
+import java.util.List;
+
 public class Triangle {
 
 	/*
@@ -32,6 +34,18 @@ public class Triangle {
 	private Point pointB;
 	private Point pointC;
 
+	private Point pointD;
+
+	private List<Point> points;
+
+	public List<Point> getPoints() {
+		return points;
+	}
+
+	public void setPoints(List<Point> points) {
+		this.points = points;
+	}
+
 	public Point getPointA() {
 		return pointA;
 	}
@@ -56,11 +70,27 @@ public class Triangle {
 		this.pointC = pointC;
 	}
 
+	public Point getPointD() {
+		return pointD;
+	}
+
+	public void setPointD(Point pointD) {
+		this.pointD = pointD;
+	}
+
 	public void draw() {
 
 		System.out.println("This is point A---> X : " + getPointA().getX() + " & Y : " + getPointA().getY());
 		System.out.println("This is point B---> X : " + getPointB().getX() + " & Y : " + getPointB().getY());
 		System.out.println("This is point C---> X : " + getPointC().getX() + " & Y : " + getPointC().getY());
+		System.out.println("This is point D---> X : " + getPointD().getX() + " & Y : " + getPointD().getY());
+
+		System.out.println("Loop begins from here------------------>");
+		for (Point point : points) {
+
+			System.out.println("This is Loop Point---> X : " + point.getX() + " & Y : " + point.getY());
+
+		}
 
 	}
 
