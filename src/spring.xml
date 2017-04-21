@@ -5,6 +5,46 @@
 <beans>
 	
 	<bean id="triangle" class="com.demo.model.Triangle">
+		
+		<!-- 
+			<property name="type" value="Equilateral"></property>
+		 -->
+		<!--
+		Property tag is used to set the class member variables using the setter and getter,
+		but instead of using this if we want to use the constructor than we will
+		use the following tag called "constructor". If there is a constructor with 2 para then
+		we will use another same tag for constructor with 2 para. The tag takes string as para value.
+		So we have 2 constructors taking "int" & "string" as para then we can specify here by using "type"
+ 		Similarly we can use "index" para in tag to specify the index of the para in the constructor
+ 		-->
+ 		<!-- <constructor-arg index="0" value="Colleteral"></constructor-arg>
+ 		<constructor-arg index="1" type ="int" value="20"></constructor-arg> -->
+ 		
+ 		
+ 		<!-- 
+ 		In the below tag the "ref" para tells the spring bean to assign a new Point object to pointA variable using the 
+ 		reference zeroPoint which is nothing but a bean that creates a new Point object same as "new Point()". 
+ 		It checks whether both have the same data type and then sets the value of the variable
+ 		 -->
+ 		<property name="pointA" ref="zeroPoint"></property>
+ 		<property name="pointB" ref="point2"></property>
+ 		<property name="pointC" ref="point3"></property>
+ 		
 	</bean>
+	<bean id="zeroPoint" class="com.demo.model.Point">
+		<property name="x" value="0"></property>
+		<property name="y" value="0"></property>
+	</bean>
+	
+	<bean id="point2" class="com.demo.model.Point">
+		<property name="x" value="-20"></property>
+		<property name="y" value="0"></property>
+	</bean>
+	
+	<bean id="point3" class="com.demo.model.Point">
+		<property name="x" value="20"></property>
+		<property name="y" value="0"></property>
+	</bean>
+	
 	
 </beans>
