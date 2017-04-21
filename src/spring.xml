@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
 
-<beans>
-	
-	<bean id="triangle" class="com.demo.model.Triangle" name="triangle-name" autowire="byName">
+<!--
+ default-destroy-method="methodName() default-init-method="myInit" :
+ similar to the the init and destroy method used below in the bean tag but this is at global level and so this will
+ be the default init and destroy for all beans.
+ -->
+<beans default-destroy-method="beforeDestroy" default-init-method="myInit">
+		<!-- 
+		If the abstract para is set to true then the spring container will not initialize that bean
+		and so we can use such bean as template/parent bean from which we can inherit common properties.
+		 -->
+		<bean id="parent-triangle" class="com.demo.model.Triangle" abstract="true">
+			<property name="pointE">
+				<bean class="com.demo.model.Point">
+					<property name="x" value="0"></property>
+					<property name="y" value="0"></property>
+				</bean>
+			</property>
+			<property name="points">
+ 				<list>
+ 					<ref bean="zeroPoint"/>
+ 				</list>
+ 			</property>
+		</bean>
+
+		<!--BEAN PARA
+		scope="singleton/prototype". Spring container will create bean object while reading the xml file and will pass
+		the same object to any call from class or ref made in the xml itself. But when it is prototype the bean object is 
+		created every time a ref or request is made to the bean in the xml.
+		
+		parent="parentBeanId". Use to inherit the properties from another bean. See the list property, we can set the "merge"
+		para true and add more elements to the list property in the parent bean. 
+		
+		init-method="methodName()". Use to register a initialization method (destroy method like that in JSP) which is called 
+		before the bean has been destroyed at the end of the program.
+		
+		destroy-method="methodName()". Use to register a destroy method (init method like that in JSP) which is called 
+		after the bean properties has been initialized in the xml.
+			 
+		 -->
+	<bean id="triangle" class="com.demo.model.Triangle" scope="singleton" name="triangle-name" autowire="byName" parent="parent-triangle" init-method="myInit"
+	destroy-method="beforeDestroy">
 		
 		<!-- 
 			<property name="type" value="Equilateral"></property>
@@ -53,10 +91,10 @@
  		Suppose we have a Collection Framework Object variable: for example here we have
  		List Object variable "points". So to insert values we will use the "list" tag and 
  		repeat the "ref" tag to add objects/values in the list. Type conversion also happens 
- 		here. 		 
+ 		here. Merge is used to add more element to list inherited from a parent bean. 		 
  		 -->
  		<property name="points">
- 			<list>
+ 			<list merge="true">
  				<ref bean="zeroPoint"/>
  				<ref bean="zeroPoint"/>
  				<ref bean="zeroPoint"/> 				
