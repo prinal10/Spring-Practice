@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
-
+<!-- <!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "http://www.springframework.org/dtd/spring-beans-2.0.dtd">
+ -->
 <!--
  default-destroy-method="methodName() default-init-method="myInit" :
  similar to the the init and destroy method used below in the bean tag but this is at global level and so this will
  be the default init and destroy for all beans.
  -->
-<beans default-destroy-method="beforeDestroy" default-init-method="myInit">
+<!-- <beans default-destroy-method="beforeDestroy" default-init-method="myInit"> -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+  xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/data/mongo
+    http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+    http://www.directwebremoting.org/schema/spring-dwr
+    http://www.directwebremoting.org/schema/spring-dwr-3.0.xsd">
 		<!-- 
 		If the abstract para is set to true then the spring container will not initialize that bean
 		and so we can use such bean as template/parent bean from which we can inherit common properties.
@@ -133,6 +147,93 @@
 	<alias name="triangle" alias="triangle-alias2"/>
 	
 	
+	<!-- 
+	This will tell the spring that there is a class which has implemented BeanPostProcessor interface
+	and it has before and after initialization methods which should run everytime a bean is created/initialized
+	which are define in this xml file.
+	 -->
+	<!-- <bean class="com.demo.model.BeanPostProcessorImpl"></bean>
+	 -->
+	 
+	 
+	<!--
+	Below the bean properties has place holders "${property_name}" which will be replace by values present in the
+	".properties" file.Read below  PropertyPlaceholderConfigure bean comments
+	 --> 
+	 <bean id="pointF" class="com.demo.model.Point">
+		<property name="x" value="${pointF.pointX}"></property>
+		<property name="y" value="${pF.pY}"></property>
+	</bean>
+	 
+	 <bean id="center" class="com.demo.model.Point">
+	 	
+	 	<qualifier value="circleRelated"></qualifier>
+	 	
+		<property name="x" value="70"></property>
+		<property name="y" value="0"></property>
+	</bean>
+	 
+	 
+	 <!-- 
+	This will tell the spring that there is a class which has implemented BeanFactoryPostProcessor interface
+	and it has postProcessBeanFactory methods which should run after the BeanFactory / ApplicationContext is 
+	initialized in the main class using the "new". It is similar to the above BeanPostProcessor interface methods
+	but methods of this interface is called before the xml file is read.
+	 -->
+	<bean class="com.demo.model.BeanFactoryPostProc"></bean>
+	
+	<!--
+	Suppose we want to load some property values of beans from another file. This can be done by using out of the box
+	BeanFactoryPostProcessor that the spring provides which is PropertyPlaceholderConfigurer. It is similar to the 
+	BeanFactoryPostProcessor class that we created by here we dont have to create a class, spring provides it instead.
+	Using this we can put put place holders instead of some values in the bean properties and initialize those beans 
+	properties form another ".properties" file. After Bean Factory is initialized in the main class it will look for
+	the below bean and if encountered it will read the ".properties" file from the location value provided in the below bean 
+	and will replace any place holders that are present in the .xml file. Here the place holders are present for the pointF 
+	bean above.
+	 -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="pointsconfig.properties"></property>
+	</bean>
+	
+	
+	<!--
+	We dont need this declaration as the @Component annotation is used in the Circle
+	class 
+	 -->
+	<!-- <bean id="circle" class="com.demo.model.Circle">
+		<property name="center1" ref="pointF"></property>
+	</bean> -->
+	
+	
+	<!--
+		Read comment in the circle class	 
+	 -->
+	<!-- <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"></bean> -->
+	
+	<!-- 
+		Read comment in the circle class	
+	 -->
+	<!-- <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean> -->
+	 
+	 <!-- 
+	 BY USING THIS WE DON'T HAVE TO ADD THE ABOVE BEAN SEPARATELY.
+	  -->
+	<context:annotation-config/>
+	
+	<context:component-scan base-package="com.demo.model"></context:component-scan>
+	
+	<!--
+	This can be used to get messages, validation messages, link address, ect from the .properties file instead of 
+	hard coding it in the xml or the java file. For more info refer Circle class
+	 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>mymessages</value>
+			</list>
+		</property>
+	</bean>
 	
 	
 	

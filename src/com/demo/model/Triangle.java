@@ -7,7 +7,7 @@ import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-public class Triangle implements ApplicationContextAware, BeanNameAware {
+public class Triangle implements ApplicationContextAware, BeanNameAware, Shape {
 
 	/*
 	 * private String type; private int height;
@@ -40,6 +40,7 @@ public class Triangle implements ApplicationContextAware, BeanNameAware {
 	private Point pointC;
 	private Point pointD;
 	private Point pointE;
+	private Point pointF;
 	private List<Point> points;
 
 	private ApplicationContext context = null;
@@ -94,6 +95,14 @@ public class Triangle implements ApplicationContextAware, BeanNameAware {
 		this.pointE = pointE;
 	}
 
+	public Point getPointF() {
+		return pointF;
+	}
+
+	public void setPointF(Point pointF) {
+		this.pointF = pointF;
+	}
+
 	public void draw() {
 
 		System.out.println("This is point A---> X : " + getPointA().getX() + " & Y : " + getPointA().getY());
@@ -101,6 +110,7 @@ public class Triangle implements ApplicationContextAware, BeanNameAware {
 		System.out.println("This is point C---> X : " + getPointC().getX() + " & Y : " + getPointC().getY());
 		System.out.println("This is point D---> X : " + getPointD().getX() + " & Y : " + getPointD().getY());
 		System.out.println("This is point E---> X : " + getPointE().getX() + " & Y : " + getPointE().getY());
+		System.out.println("This is point F---> X : " + getPointF().getX() + " & Y : " + getPointF().getY());
 
 		System.out.println("Loop begins from here------------------>");
 		for (Point point : points) {
