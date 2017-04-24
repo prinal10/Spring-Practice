@@ -7,6 +7,8 @@ import com.demo.model.Shape;
 
 public class DrawingApp {
 
+	private static AbstractApplicationContext context;
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -35,9 +37,7 @@ public class DrawingApp {
 		 */
 
 		System.out.println("---------------Begining of the main class ----------------");
-		AbstractApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
-		// System.out.println("After the spring.xml file is read and the all
-		// beans are initialized");
+		context = new ClassPathXmlApplicationContext("spring.xml");
 
 		context.registerShutdownHook();
 

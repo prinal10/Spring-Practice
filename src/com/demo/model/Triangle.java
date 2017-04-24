@@ -43,8 +43,10 @@ public class Triangle implements ApplicationContextAware, BeanNameAware, Shape {
 	private Point pointF;
 	private List<Point> points;
 
+	@SuppressWarnings("unused")
 	private ApplicationContext context = null;
 
+	@SuppressWarnings("unused")
 	private String beanName;
 
 	public List<Point> getPoints() {
